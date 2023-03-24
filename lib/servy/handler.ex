@@ -47,6 +47,25 @@ defmodule Servy.Handler do
     %{ conv | status: 200, resp_body: "Bear #{id}" }
   end
 
+  def route(%{method: "GET", path: "/about"} = conv) do
+      Path.expand("../../pages", __DIR__)
+      |> Path.join("about.html")
+      |> File.read
+      |> handle_file(conv)
+  end
+
+  def handle_file({:ok, content}, conv) do
+    %{ conv | status: 200, resp_body: content }
+  end
+
+  def handle_file({:error, :enoent}, conv) do
+    %{ conv | status: 404, resp_body: "File not found!" }
+  end
+
+  def handle_file({:error, reason}, conv) do
+    %{ conv | status: 500, resp_body: "File error: #{reason}" }
+  end
+
   def route(%{path: path} = conv) do
     %{ conv | status: 404, resp_body: "No #{path} here!" }
   end
@@ -83,7 +102,7 @@ end
 request = """
 GET /wildthings HTTP/1.1
 Host: example.com
-Uer-Agent: ExampleBrowser/1.0
+User-Agent: ExampleBrowser/1.0
 Accept: */*
 
 """
@@ -96,7 +115,7 @@ IO.puts "**************"
 request = """
 GET /bears HTTP/1.1
 Host: example.com
-Uer-Agent: ExampleBrowser/1.0
+User-Agent: ExampleBrowser/1.0
 Accept: */*
 
 """
@@ -109,7 +128,7 @@ IO.puts "**************"
 request = """
 GET /bigfoot HTTP/1.1
 Host: example.com
-Uer-Agent: ExampleBrowser/1.0
+User-Agent: ExampleBrowser/1.0
 Accept: */*
 
 """
@@ -122,7 +141,7 @@ IO.puts "**************"
 request = """
 GET /bears/1 HTTP/1.1
 Host: example.com
-Uer-Agent: ExampleBrowser/1.0
+User-Agent: ExampleBrowser/1.0
 Accept: */*
 
 """
@@ -135,7 +154,20 @@ IO.puts "**************"
 request = """
 GET /wildlife HTTP/1.1
 Host: example.com
-Uer-Agent: ExampleBrowser/1.0
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+
+response = Servy.Handler.handle(request)
+IO.puts "**************"
+IO.puts response
+IO.puts "**************"
+
+request = """
+GET /about HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
 Accept: */*
 
 """
