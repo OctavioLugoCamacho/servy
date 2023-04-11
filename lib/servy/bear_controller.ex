@@ -1,5 +1,9 @@
 defmodule Servy.BearController do
+
+  alias Servy.Wildthings
+
   def index(conv) do
+    bears = Wildthings.list_bears()
     %{ conv | status: 200, resp_body: "Teddy, Smokey, Paddington" }
   end
 
