@@ -40,7 +40,7 @@ defmodule HandlerTest do
     Content-Length: 355\r
     \r
     <h1>All the bears!</h1>
-    
+
     <ul>
       <li>Brutus - Grizzly</li>
       <li>Iceman - Polar</li>
@@ -147,7 +147,7 @@ defmodule HandlerTest do
     space with other stars all singing ans shining together as one,
     the whole universe appears as an infinite storm of beauty.
     -- John Muir
-    </blockquote>    
+    </blockquote>
     """
 
     assert remove_whitespace(response) == remove_whitespace(expected_response)
@@ -176,7 +176,38 @@ defmodule HandlerTest do
     """
   end
 
+  test "GET /api/bears" do
+    request = """
+    GET /api/bears HTTP/1.1\r
+    Host: example.com\r
+    User-Agent: ExampleBrowser/1.0\r
+    Accept: */*\r
+    \r
+    """
+
+    response = handle(request)
+
+    expected_response = """
+    HTTP/1.1 200 OK\r
+    Content-Type: application/json\r
+    Content-Length: 605\r
+    \r
+    [{"type":"Brown","name":"Teddy","id":1,"hibernating":true},
+     {"type":"Black","name":"Smokey","id":2,"hibernating":false},
+     {"type":"Brown","name":"Paddington","id":3,"hibernating":false},
+     {"type":"Grizzly","name":"Scarface","id":4,"hibernating":true},
+     {"type":"Polar","name":"Snow","id":5,"hibernating":false},
+     {"type":"Grizzly","name":"Brutus","id":6,"hibernating":false},
+     {"type":"Black","name":"Rosie","id":7,"hibernating":true},
+     {"type":"Panda","name":"Roscoe","id":8,"hibernating":false},
+     {"type":"Polar","name":"Iceman","id":9,"hibernating":true},
+     {"type":"Grizzly","name":"Kenai","id":10,"hibernating":false}]
+    """
+
+    assert remove_whitespace(response) == remove_whitespace(expected_response)
+  end
+
   defp remove_whitespace(text) do
     String.replace(text, ~r{\s}, "")
-  end 
+  end
 end
