@@ -90,5 +90,4 @@ defmodule Servy.HttpServer do
     # Does not close the listen socket!
     :gen_tcp.close(client_socket)
   end
-
 end

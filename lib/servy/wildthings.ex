@@ -1,4 +1,5 @@
 defmodule Servy.Wildthings do
+
   alias Servy.Bear
 
   def list_bears do
@@ -23,4 +24,5 @@ defmodule Servy.Wildthings do
   def get_bear(id) when is_binary(id) do
     id |> String.to_integer |> get_bear
   end
+
 end

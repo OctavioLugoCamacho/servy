@@ -1,4 +1,5 @@
 defmodule Servy.Tracker do
+
   @doc """
   Simulates sending a request to an external API
   to get the GPS coordinates of a wildthing.
@@ -19,4 +20,5 @@ defmodule Servy.Tracker do
 
     Map.get(locations, wildthing)
   end
+
 end
