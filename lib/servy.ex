@@ -1,6 +1,6 @@
 defmodule Servy do
   def hello(name) do
-    "Hello #{name}!!!"
+    "Hello my friend #{name}!!!"
   end
 end
 
